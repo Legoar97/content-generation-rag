@@ -10,13 +10,17 @@ from .vector_search import vectorize_text, search_vectors
 from .data_ingestion import ingest_wikipedia_data, ingest_rss_feed
 import openai
 import os
+from dotenv import load_dotenv
 import logging
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+load_dotenv()  # Carga las variables de entorno desde el archivo .env
+
 router = APIRouter()
-openai.api_key = os.getenv("sk-proj-EWqFUHPcUif4Yp5o7SycT3BlbkFJnLf356cJY5OEboV8dW4I")
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 @router.post("/add_document/", response_model=DocumentResponse)
 async def add_document(document: DocumentCreate, db: AsyncSession = Depends(get_db)):
